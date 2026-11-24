@@ -1,0 +1,16 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && ((auth.uid === $uid && !data.exists() && newData.child('role').val() === 'Manager' && newData.child('rid').val() === $uid) || (root.child('users/' + auth.uid + '/role').val() === 'Manager' && (newData.child('rid').val() === root.child('users/' + auth.uid + '/rid').val() || (!newData.exists() && data.child('rid').val() === root.child('users/' + auth.uid + '/rid').val()))))"
+      }
+    },
+    "restaurants": {
+      "$rid": {
+        "profile": { ".read": true, ".write": "auth != null && auth.uid === $rid" },
+        "main": { ".read": "auth != null", ".write": "auth != null" }
+      }
+    }
+  }
+}
